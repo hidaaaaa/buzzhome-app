@@ -1,0 +1,28 @@
+.privateChat {
+	margin-top: 8rem;
+
+	&__sider {
+		//height: 100%;
+		background-color: #ffffff;
+	}
+
+	&__menu {
+		height: calc(100vh - 15rem);
+		width: 300px !important;
+		background-color: #ffffff;
+	}
+}
+
+.listChat {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+
+	&__photo {
+	}
+
+	&__name {
+		width: 70%;
+		word-wrap: break-word;
+	}
+}

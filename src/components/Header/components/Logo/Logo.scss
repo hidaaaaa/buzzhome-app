@@ -1,0 +1,27 @@
+@import "../../../../sass/index.scss";
+
+.logo {
+    display: flex;
+    align-items: flex-end;
+    .name {
+        font-size: $font-size-heading3;
+        background: rgb(0, 147, 233);
+        background: linear-gradient(
+            90deg,
+            rgba(0, 147, 233, 1) 0%,
+            rgba(25, 75, 145, 1) 100%
+        );
+        background-clip: text;
+        -webkit-background-clip: text;
+        color: transparent;
+        font-weight: bold;
+        cursor: default;
+    }
+    .slogan {
+        margin-left: .4rem;
+        font-style: italic;
+        color: $color-gray;
+        font-size: $font-size-paragraph1;   
+        letter-spacing: 1px;
+    }
+}

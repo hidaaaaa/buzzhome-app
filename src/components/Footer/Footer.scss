@@ -1,0 +1,10 @@
+@import '../../sass/index.scss';
+
+.footer {
+    margin-top: 8rem;
+    text-align: center;
+    font-size: $font-size-subtitle1;
+    a {
+        color: $color-primary;
+    }
+}

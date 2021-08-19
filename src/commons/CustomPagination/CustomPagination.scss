@@ -1,0 +1,15 @@
+
+.custom-pagination {
+    // custom antd
+    .ant-pagination-prev, .ant-pagination-next {
+        min-width: auto;
+        button {
+            border: none;
+        }
+    }
+    .ant-pagination-item {
+        border-radius: 3px;
+        // &.ant-pagination-item-active {
+        // }
+    }
+}
