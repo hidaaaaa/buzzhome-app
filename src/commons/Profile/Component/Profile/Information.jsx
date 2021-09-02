@@ -1,21 +1,19 @@
-import { Button, Col, Image, message, Row, Upload } from "antd";
+import { Button, Col, Image, message, notification, Row, Upload } from "antd";
 import Modal from "antd/lib/modal/Modal";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import { useHistory } from "react-router-dom";
 import ChangeNameForm from "../../../ChangeNameForm/ChangeNameForm";
+import ChangePhoneForm from "../../../ChangePhoneForm/ChangePhoneForm";
 import "./style/Information.scss";
 
 const DescriptionItem = ({ title, content }) => (
-	<div
-		className="site-description-item-profile-wrapper"
-		style={{ display: "flex", alignItems: "center", justifyContent: "center" }}
-	>
+	<div className="site-description-item-profile-wrapper">
 		<div
 			className="site-description-item-profile-p-label"
 			style={{
 				display: "inline-block",
 				marginRight: 8,
-				color: "rgba(0, 0, 0, 0.85)",
 			}}
 		>
 			{title}:
@@ -31,23 +29,69 @@ const DescriptionItem = ({ title, content }) => (
 function Information({ firebase, user, storage }) {
 	const [photo, setPhoto] = useState(user.photoURL);
 	const [button, setButton] = useState(true);
-	const [isChangeName, setIsChangeName] = useState(false);
+	const [isChangeName, setIsChangeName] = useState("");
 	const [file, setFile] = useState(null);
 	const history = useHistory();
+	const [phoneSelected, setPhoneSelected] = useState("");
 
+	// get all phone firebase
+	const phoneRef = firebase.firestore().collection("Phone");
+	const query = phoneRef.limit(100);
+	const [phone, loading] = useCollectionData(query, { idField: "id" });
+
+	// get phone user by uid
+	useEffect(() => {
+		if (loading) {
+			return;
+		}
+		if (phone.findIndex((item) => item.uid === user.uid) > -1) {
+			setPhoneSelected(
+				phone[phone.findIndex((item) => item.uid === user.uid)].phone
+			);
+		}
+	}, [loading, phone]);
+
+	// handle change name user
 	const handleChangeName = async ({ name }) => {
 		user
 			.updateProfile({
 				displayName: name,
 			})
 			.then(() => {
-				setIsChangeName(false);
+				setIsChangeName("");
+				return notification.success({
+					message: "Thay đổi tên thành công",
+				});
 			})
 			.catch((error) => {
 				console.log(error);
+				return notification.error({
+					message: "Thay đổi tên thất bại",
+				});
 			});
 	};
 
+	// handle change phone
+	const handleChangePhone = async ({ phone }) => {
+		await phoneRef
+			.add({
+				phone: phone,
+				uid: user.uid,
+			})
+			.then(() => {
+				setIsChangeName("");
+				return notification.success({
+					message: "Thay đổi số điện thoại thành công",
+				});
+			})
+			.catch(() => {
+				return notification.error({
+					message: "Thay đổi số điện thoại thất bại",
+				});
+			});
+	};
+
+	// handle change image
 	const onChangeImage = (e) => {
 		console.log(e.target.files[0]);
 		setButton(false);
@@ -55,8 +99,9 @@ function Information({ firebase, user, storage }) {
 		setFile(e.target.files[0]);
 	};
 
+	// handle upload avatar
 	const uploadAvatar = async () => {
-		const uploadTask = await storage.ref(`images/${user.uid}`).put(file);
+		await storage.ref(`images/${user.uid}`).put(file);
 
 		if (!!file) {
 			const storageRef = await storage.ref();
@@ -70,6 +115,13 @@ function Information({ firebase, user, storage }) {
 						})
 						.then(() => {
 							setPhoto(url);
+
+							notification.success({
+								message: "đổi ảnh thành công",
+							});
+						})
+						.then(() => {
+							return history.go(0);
 						})
 						.catch((error) => {
 							console.log(error);
@@ -79,9 +131,14 @@ function Information({ firebase, user, storage }) {
 		}
 	};
 
+	// hanlde cancle upload
 	const cancleUploadAvatar = () => {
 		history.go(0);
 	};
+
+	if (loading) {
+		return <div>loading </div>;
+	}
 
 	return (
 		<div className="information">
@@ -104,7 +161,7 @@ function Information({ firebase, user, storage }) {
 								type="file"
 								name="file"
 								id="file"
-								class="inputfile"
+								className="inputfile"
 								onChange={onChangeImage}
 							/>
 							<label for="file">Choose a file</label>
@@ -124,11 +181,11 @@ function Information({ firebase, user, storage }) {
 				<Col span={24} className="information__col">
 					{user.displayName ? (
 						<DescriptionItem
-							title="Full Name"
+							title="Tên hiển thị"
 							content={
 								<>
 									{user.displayName}
-									<Button type="link" onClick={() => setIsChangeName(true)}>
+									<Button type="link" onClick={() => setIsChangeName("name")}>
 										Đổi
 									</Button>
 								</>
@@ -136,10 +193,10 @@ function Information({ firebase, user, storage }) {
 						/>
 					) : (
 						<DescriptionItem
-							title="Full Name"
+							title="Tên hiển thị"
 							content={
 								<>
-									<Button type="link" onClick={() => setIsChangeName(true)}>
+									<Button type="link" onClick={() => setIsChangeName("name")}>
 										Chưa có, thêm ngay
 									</Button>
 								</>
@@ -149,7 +206,7 @@ function Information({ firebase, user, storage }) {
 				</Col>
 
 				<Col span={24} className="information__col">
-					<DescriptionItem title="Account" content={user.email} />
+					<DescriptionItem title="Tài khoản" content={user.email} />
 				</Col>
 
 				<Col span={24} className="information__col">
@@ -167,18 +224,52 @@ function Information({ firebase, user, storage }) {
 						}
 					/>
 				</Col>
+
+				<Col span={24} className="information__col">
+					<DescriptionItem
+						title="Số điện thoại"
+						content={
+							phoneSelected !== "" ? (
+								<div>
+									{
+										<>
+											{phoneSelected}
+											<Button
+												type="link"
+												onClick={() => setIsChangeName("phone")}
+											>
+												Đổi
+											</Button>
+										</>
+									}
+								</div>
+							) : (
+								<Button type="link" onClick={() => setIsChangeName("phone")}>
+									Chưa có, thêm ngay
+								</Button>
+							)
+						}
+					/>
+				</Col>
 			</Row>
 
 			<Modal
-				visible={isChangeName}
-				onCancel={() => setIsChangeName(false)}
+				visible={isChangeName !== ""}
+				onCancel={() => setIsChangeName("")}
 				footer={false}
 				className="modal__changeName modalBox"
 			>
-				<ChangeNameForm
-					name={user.displayName || ""}
-					handleChangeName={handleChangeName}
-				/>
+				{isChangeName === "name" ? (
+					<ChangeNameForm
+						name={user.displayName || ""}
+						handleChangeName={handleChangeName}
+					/>
+				) : (
+					<ChangePhoneForm
+						phone={phoneSelected}
+						handleChangePhone={handleChangePhone}
+					/>
+				)}
 			</Modal>
 		</div>
 	);

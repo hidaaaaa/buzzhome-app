@@ -1,7 +1,6 @@
 import { Col, Row } from "antd";
 import React from "react";
 import { useEffect, useState } from "react";
-import { isCompositeComponent } from "react-dom/test-utils";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 import { getAllData } from "../../../../api/house.api";
 import CardItemHome from "../../../../components/CardItemHome/CardItemHome";
@@ -14,11 +13,12 @@ function LikePost({ user, firebase }) {
 	const [dataModalDetail, setDataModalDetail] = useState({});
 	const [modalDetailVisible, setModalDetailVisible] = useState(false);
 
+	// get all post like
 	const likePostRef = firebase.firestore().collection("user");
 	const query = likePostRef.limit(25);
-
 	const [likeAllPost, loading] = useCollectionData(query, { idField: "id" });
 
+	// check id posts were like by user
 	useEffect(() => {
 		if (!loading && !!likeAllPost) {
 			const temp = likeAllPost.filter(
@@ -28,6 +28,7 @@ function LikePost({ user, firebase }) {
 		}
 	}, [loading, likeAllPost]);
 
+	// check posts data were like by user
 	useEffect(() => {
 		(async () => {
 			try {
@@ -54,6 +55,7 @@ function LikePost({ user, firebase }) {
 		})();
 	}, [likePost]);
 
+	// open modal post
 	const closeModalDetail = () => {
 		setModalDetailVisible(false);
 	};
@@ -78,9 +80,9 @@ function LikePost({ user, firebase }) {
 					allPost.map((item, index) => (
 						<Col
 							sm={24}
-							md={12}
-							lg={12}
-							xl={12}
+							md={{ span: 7, offset: 1 }}
+							lg={{ span: 7, offset: 1 }}
+							xl={{ span: 7, offset: 1 }}
 							className="item-in-list"
 							key={index}
 						>

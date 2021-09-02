@@ -9,7 +9,7 @@ import "./CommentDetail.scss";
 import CustomComment from "./components/CustomComment/CustomComment";
 
 const CommentDetail = ({ data, user, firestore, firebase }) => {
-	const [id, setId] = useState(data.id);
+	// get list comment from firebase
 	const productCommentRef = firestore
 		.collection("productComment")
 		.doc(`${data.id}`)
@@ -22,6 +22,7 @@ const CommentDetail = ({ data, user, firestore, firebase }) => {
 	const [status, setStatus] = useState(true); //true = sign in || false = sign up
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
+	// handle modal
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
@@ -38,6 +39,7 @@ const CommentDetail = ({ data, user, firestore, firebase }) => {
 		setStatus(!status);
 	};
 
+	// send comment
 	const handleSubmit = async (values) => {
 		await productCommentRef.add({
 			avatar: user.photoURL || "",
@@ -62,6 +64,7 @@ const CommentDetail = ({ data, user, firestore, firebase }) => {
 				</div>
 			))}
 
+			{/* check login */}
 			{!!user ? (
 				<CustomInputComment onSubmit={handleSubmit} />
 			) : (

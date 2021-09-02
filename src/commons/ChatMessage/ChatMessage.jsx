@@ -1,4 +1,4 @@
-import { Button } from "antd";
+import { Button, Image } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import Modal from "antd/lib/modal/Modal";
 import React, { useState } from "react";
@@ -7,7 +7,7 @@ import { useHistory } from "react-router-dom";
 import "./ChatMessage.scss";
 
 function ChatMessage({ message, user, firestore, firebase }) {
-	const { text, uid, photoURL, displayName } = message;
+	const { text, uid, photoURL, displayName, imagesLink } = message;
 	const privateChatRef = firestore.collection("PrivateChat");
 	const query = privateChatRef.orderBy("createAt").limit(25);
 
@@ -16,6 +16,7 @@ function ChatMessage({ message, user, firestore, firebase }) {
 
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
+	// handle open modal info
 	const showModal = () => {
 		if (user !== "123") {
 			setIsModalVisible(true);
@@ -30,16 +31,21 @@ function ChatMessage({ message, user, firestore, firebase }) {
 		setIsModalVisible(false);
 	};
 
+	// type of message
 	const messageClass = user.uid === uid ? "sent" : "received";
 
+	// handle go to privateChat
 	const changeToPrivateChat = async () => {
+		//check have box chat
 		const index = privateChat.findIndex((item) => {
 			return item.idChat.search(uid) > -1 && item.idChat.search(user.uid) > -1;
 		});
 
+		// if yes open this chat box
 		if (index > -1) {
 			history.push(`/message/${privateChat[index].idChat}`);
 		} else {
+			//if no create new box chat
 			await privateChatRef.add({
 				createAt: firebase.firestore.FieldValue.serverTimestamp(),
 				idChat: `${uid}${user.uid}`,
@@ -55,6 +61,7 @@ function ChatMessage({ message, user, firestore, firebase }) {
 				},
 			});
 
+			// go to box chat
 			history.push(`message/${uid}${user.uid}`);
 		}
 	};
@@ -63,6 +70,15 @@ function ChatMessage({ message, user, firestore, firebase }) {
 		<div className={`chatMessage ${messageClass}`}>
 			<div className="chatMessage__content">
 				<p className={`chatMessage__text ${messageClass}`}>{text}</p>
+				{imagesLink ? (
+					<p className={`chatMessage__image ${messageClass}`}>
+						{imagesLink.map((imageLink, index) => (
+							<Image key={index} src={imageLink} width={100} />
+						))}
+					</p>
+				) : (
+					<></>
+				)}
 			</div>
 		</div>
 	) : (
@@ -79,6 +95,16 @@ function ChatMessage({ message, user, firestore, firebase }) {
 			<div className="chatMessage__content">
 				<p className={`chatMessage__name ${messageClass}`}>{displayName}</p>
 				<p className={`chatMessage__text ${messageClass}`}>{text}</p>
+
+				{imagesLink ? (
+					<p className={`chatMessage__image ${messageClass}`}>
+						{imagesLink.map((imageLink, index) => (
+							<Image key={index} src={imageLink} width={100} />
+						))}
+					</p>
+				) : (
+					<></>
+				)}
 			</div>
 
 			<Modal

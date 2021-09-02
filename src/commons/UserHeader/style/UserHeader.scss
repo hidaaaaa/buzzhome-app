@@ -1,3 +1,5 @@
+@import "../../../sass/index.scss";
+
 .headerUser {
 	display: flex;
 	align-items: center;
@@ -16,10 +18,10 @@
 	}
 
 	&:hover {
-		background-color: #40a9ff;
+		background-color: $color-golden;
 
 		.headerUser__name {
-			color: #ffffff;
+			color: black;
 		}
 	}
 }

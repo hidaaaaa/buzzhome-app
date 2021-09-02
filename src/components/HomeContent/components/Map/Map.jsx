@@ -54,31 +54,31 @@ const Map = ({
 		setYMapBounds({ min: yMapBounds.f, max: yMapBounds.b });
 	};
 
-	useEffect(() => {
-		const stickMapToTop = (event) => {
-			const positionY = window.scrollY;
-			const mapElement = document.getElementById("map-wrap");
+	// useEffect(() => {
+	// 	const stickMapToTop = (event) => {
+	// 		const positionY = window.scrollY;
+	// 		const mapElement = document.getElementById("map-wrap");
 
-			if (
-				window.pageYOffset + window.innerHeight + 50 >=
-				document.body.scrollHeight
-			) {
-				setStickStyleClassName("stick-bottom");
-			} else if (
-				positionY >
-				Math.max(mapElement.getBoundingClientRect().y, currentPositionMap)
-			) {
-				setStickStyleClassName("stick-top");
-			} else {
-				setStickStyleClassName("");
-			}
-		};
-		window.addEventListener("scroll", stickMapToTop);
+	// 		if (
+	// 			window.pageYOffset + window.innerHeight + 50 >=
+	// 			document.body.scrollHeight
+	// 		) {
+	// 			setStickStyleClassName("stick-bottom");
+	// 		} else if (
+	// 			positionY >
+	// 			Math.max(mapElement.getBoundingClientRect().y, currentPositionMap)
+	// 		) {
+	// 			setStickStyleClassName("stick-top");
+	// 		} else {
+	// 			setStickStyleClassName("");
+	// 		}
+	// 	};
+	// 	window.addEventListener("scroll", stickMapToTop);
 
-		return () => {
-			window.removeEventListener("scroll", stickMapToTop);
-		};
-	}, [currentPositionMap]);
+	// 	return () => {
+	// 		window.removeEventListener("scroll", stickMapToTop);
+	// 	};
+	// }, [currentPositionMap]);
 
 	useEffect(() => {
 		const mapElement = document.getElementById("map-wrap");
@@ -141,6 +141,7 @@ const Map = ({
 					<Button onClick={onClickVisibleMap}>X</Button>
 					{data &&
 						data.map((item, index) => {
+							// console.log("vi tri :", index, item.lat, item.lng);
 							return (
 								<OverlayView
 									key={index}

@@ -2,6 +2,7 @@ import { Form, notification } from "antd";
 import React from "react";
 
 function ChangePassword({ user, firebase }) {
+	// create authenticate
 	const reAuthenticate = (currentPassword) => {
 		let credential = firebase.auth.EmailAuthProvider.credential(
 			user.email,
@@ -11,13 +12,12 @@ function ChangePassword({ user, firebase }) {
 		return user.reauthenticateWithCredential(credential);
 	};
 
-	console.log(user.providerData[0].providerId);
-
+	// handle change password(if login by email)
 	const onFinish = (values) => {
 		reAuthenticate(values.password)
 			.then(() => {
 				user.updatePassword(values.repassword);
-				return notification.open({
+				return notification.success({
 					message: "Thay đổi mật khẩu thành công",
 				});
 			})
@@ -30,12 +30,13 @@ function ChangePassword({ user, firebase }) {
 			});
 	};
 
+	// handle change password (if login by goolgle)
 	const sendEmailChangePassword = () => {
 		firebase
 			.auth()
 			.sendPasswordResetEmail(user.email)
 			.then(() => {
-				return notification.open({
+				return notification.success({
 					message: "Check email để đổi mật khẩu",
 				});
 			})
@@ -47,6 +48,7 @@ function ChangePassword({ user, firebase }) {
 			});
 	};
 
+	// user.providerData[0].providerId type of login
 	return user.providerData[0].providerId === "password" ? (
 		<>
 			<div className="form">
@@ -72,6 +74,32 @@ function ChangePassword({ user, firebase }) {
 								require: true,
 								message: "Hãy nhập mật khẩu!",
 							},
+						]}
+					>
+						<input type="password" className="form__input" />
+					</Form.Item>
+					<div className="form__label">Nhập lại mật khẩu mới : </div>
+					<Form.Item
+						name="confirm"
+						dependencies={["repassword"]}
+						hasFeedback
+						rules={[
+							{
+								required: true,
+								message: "Please confirm your password!",
+							},
+							({ getFieldValue }) => ({
+								validator(_, value) {
+									if (!value || getFieldValue("repassword") === value) {
+										return Promise.resolve();
+									}
+									return Promise.reject(
+										new Error(
+											"The two passwords that you entered do not match!"
+										)
+									);
+								},
+							}),
 						]}
 					>
 						<input type="password" className="form__input" />

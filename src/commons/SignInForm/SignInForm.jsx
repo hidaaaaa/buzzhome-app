@@ -1,21 +1,46 @@
-import { Button, Col, Form, Input, notification, Row } from "antd";
+import { Form, notification } from "antd";
 import React from "react";
+import { useCollectionData } from "react-firebase-hooks/firestore";
 import "./style/SignInForm.scss";
 
-function form({ auth, firebase }) {
+function FormSignIn({ auth, firebase }) {
+	const listUserRef = firebase.firestore().collection("listUser");
+	const query = listUserRef.limit(25);
+	const [listUser, loading] = useCollectionData(query, { idField: "id" });
+
+	// handle sign in with google
 	const SignInWithGoogle = () => {
 		const provider = new firebase.auth.GoogleAuthProvider();
-		auth.signInWithPopup(provider);
-	};
-
-	const signIn = (email, password) => {
 		auth
-			.signInWithEmailAndPassword(email, password)
-			.then(() => {
-				return notification.success({
-					message: "Sign up sucess",
-					description: "",
-				});
+			.signInWithPopup(provider)
+			.then(async ({ user }) => {
+				const index = listUser.findIndex((item) => item.uid === user.uid);
+
+				if (index > -1) {
+					if (listUser[index].status !== "block") {
+						return notification.success({
+							message: "Đăng nhập thành công",
+							description: "",
+						});
+					} else {
+						auth.signOut();
+						return notification.error({
+							message: "Không thể đăng nhập",
+							description:
+								"Tài khoản của bạn đã bị khóa do vi phạm tiêu chuẩn cộng đồng",
+						});
+					}
+				} else {
+					await listUserRef.add({
+						uid: user.uid,
+						email: user.email,
+						status: "live",
+					});
+					return notification.success({
+						message: "Đăng nhập thành công",
+						description: "",
+					});
+				}
 			})
 			.catch((error) => {
 				let errorCode = "Fail";
@@ -28,6 +53,51 @@ function form({ auth, firebase }) {
 			});
 	};
 
+	// function sign in with email
+	const signIn = (email, password) => {
+		auth
+			.signInWithEmailAndPassword(email, password)
+			.then(async ({ user }) => {
+				const index = listUser.findIndex((item) => item.uid === user.uid);
+
+				if (index > -1) {
+					if (listUser[index].status !== "block") {
+						return notification.success({
+							message: "Đăng nhập thành công",
+							description: "",
+						});
+					} else {
+						auth.signOut();
+						return notification.error({
+							message: "Không thể đăng nhập",
+							description:
+								"Tài khoản của bạn đã bị khóa do vi phạm tiêu chuẩn cộng đồng",
+						});
+					}
+				} else {
+					await listUserRef.add({
+						uid: user.uid,
+						email: user.email,
+						status: "live",
+					});
+					return notification.success({
+						message: "Đăng nhập thành công",
+						description: "",
+					});
+				}
+			})
+			.catch((error) => {
+				let errorCode = "Fail";
+				let errorMessage = error.message;
+
+				return notification.error({
+					message: "Đăng nhập thất bại",
+					// description: errorMessage,
+				});
+			});
+	};
+
+	// handle sign in with email
 	const onFinish = (values) => {
 		signIn(values.email, values.password);
 	};
@@ -48,7 +118,7 @@ function form({ auth, firebase }) {
 					rules={[
 						{
 							type: "email",
-							message: "Please input your username!",
+							message: "Please input your email!",
 						},
 					]}
 				>
@@ -82,4 +152,4 @@ function form({ auth, firebase }) {
 	);
 }
 
-export default form;
+export default FormSignIn;

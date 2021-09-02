@@ -2,6 +2,7 @@ import { Button, Menu } from "antd";
 import Avatar from "antd/lib/avatar/avatar";
 import Sider from "antd/lib/layout/Sider";
 import React from "react";
+import { Link } from "react-router-dom";
 
 const { SubMenu } = Menu;
 
@@ -14,11 +15,11 @@ function SiderAdmin({ auth, user }) {
 					style={{
 						fontSize: "2.5rem",
 						fontWeight: "bold",
-						backgroundColor: "#ffffff",
-						color: "#001529",
+						backgroundColor: "#e4cd8e",
+						color: "#0f0f0f",
 						width: "calc(100% - 2rem)",
 						margin: "1rem 1rem 4rem 1rem",
-						borderRadius: "10px",
+						borderRadius: "5px",
 					}}
 				>
 					Buzzhome
@@ -47,7 +48,12 @@ function SiderAdmin({ auth, user }) {
 					</Menu.Item>
 				</SubMenu>
 
-				<Menu.Item key="1">Xóa bài viết</Menu.Item>
+				<Menu.Item key="1">
+					<Link to="/admin/posts">Bài viết</Link>
+				</Menu.Item>
+				<Menu.Item key="2">
+					<Link to="/admin/users">Tài khoản</Link>
+				</Menu.Item>
 			</Menu>
 		</Sider>
 	);

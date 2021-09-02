@@ -3,14 +3,17 @@ import React from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
 
 function CustomChecked({ data, user, firestore }) {
+	// get list checked by user
 	const productRef = firestore.collection("user");
 	const query = productRef.limit(25);
 	const [values, loading] = useCollectionData(query, { idField: "id" });
 
+	// return null when user no logged in
 	if (!!!user) {
 		return <></>;
 	}
 
+	// handle when user checked
 	const handleSubmit = () => {
 		const index = values.findIndex(
 			(item) => item.id === `${user.uid}${data.id}`
@@ -25,8 +28,6 @@ function CustomChecked({ data, user, firestore }) {
 			});
 		}
 	};
-
-	console.log(user.uid, data.id, values);
 
 	return !loading ? (
 		<div onClick={handleSubmit}>

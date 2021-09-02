@@ -5,9 +5,6 @@ function ChangeNameForm({ name, handleChangeName }) {
 	const onFinish = (values) => {
 		if (handleChangeName) {
 			handleChangeName(values);
-			return notification.success({
-				message: "Thay đổi mật khẩu thành công",
-			});
 		}
 	};
 	return (

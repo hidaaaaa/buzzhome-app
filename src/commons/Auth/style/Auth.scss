@@ -1,14 +1,18 @@
+@import "../../../sass/index.scss";
+
 .modalBox {
 	padding: 2rem;
 	text-align: center;
 
 	.ant-modal-content {
 		padding: 2rem;
-		border-radius: 10px;
+		border-radius: 20px;
+		background-color: #181818 !important;
+		color: $color-white;
 	}
 
 	&__title {
-		color: #0093e9;
+		color: $color-golden;
 		font-size: 2.5rem;
 		font-weight: bold;
 		padding-bottom: 1rem;
@@ -18,16 +22,20 @@
 
 .buttonLogin {
 	background-color: transparent;
-	color: #ffffff;
+	color: $color-black;
 	font-weight: bold;
 	padding: 0.5rem 1rem;
-	border: #0093e9 solid 1px;
-	background-color: rgba($color: #0093e9, $alpha: 0.5);
+	border: $color-white solid 1px;
+	background-color: $color-golden;
 	border-radius: 30px !important;
 
+	&:hover {
+		background-color: rgba($color: $color-golden, $alpha: 0.7);
+	}
+
 	&.native {
-		border: #0093e9 solid 1px;
-		color: #0093e9;
+		border: $color-golden solid 1px;
+		color: $color-golden;
 		background-color: transparent;
 	}
 }

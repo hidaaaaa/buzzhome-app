@@ -5,7 +5,8 @@ import { Link } from "react-router-dom";
 const Footer = () => {
 	return (
 		<footer className="footer">
-			Made By <Link to="/">Goware Technology JSC</Link> With The Big Vision
+			Made By <Link to="/https://www.facebook.com/r1tz0801">Dung Vo</Link> With
+			The Big Vision
 		</footer>
 	);
 };

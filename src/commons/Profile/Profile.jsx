@@ -5,6 +5,7 @@ import React from "react";
 import { Link, Route, Switch } from "react-router-dom";
 import ChangePassword from "./Component/ChangePassword/ChangePassword";
 import LikePost from "./Component/LikePost/LikePost";
+import Posts from "./Component/Posts/Posts";
 import Information from "./Component/Profile/Information";
 import "./style/profile.scss";
 
@@ -20,6 +21,7 @@ function Profile({ user, firebase, storage }) {
 				<Menu
 					className="profile__menu"
 					mode="inline"
+					theme="dark"
 					defaultSelectedKeys={["1"]}
 				>
 					<Menu.Item key="1">
@@ -30,10 +32,13 @@ function Profile({ user, firebase, storage }) {
 					</Menu.Item>
 					<Menu.Item key="3">
 						<Link to="/me/like-post">Các bài viết đã quan tâm</Link>
+					</Menu.Item>{" "}
+					<Menu.Item key="4">
+						<Link to="/me/posts">Các bài viết đã đăng</Link>
 					</Menu.Item>
 				</Menu>
 			</Sider>
-			<Layout>
+			<Layout className="profile__layout">
 				<Content className="profile__content">
 					<Switch>
 						<Route path="/me/information">
@@ -44,6 +49,9 @@ function Profile({ user, firebase, storage }) {
 						</Route>
 						<Route path="/me/like-post">
 							<LikePost user={user} firebase={firebase} />
+						</Route>
+						<Route path="/me/posts">
+							<Posts user={user} firebase={firebase} />
 						</Route>
 					</Switch>
 				</Content>

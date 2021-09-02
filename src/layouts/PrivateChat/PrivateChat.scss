@@ -1,15 +1,38 @@
+@import "../../sass/index.scss";
 .privateChat {
-	margin-top: 8rem;
+	padding-top: 8rem;
+	background-color: $color-black;
 
 	&__sider {
 		//height: 100%;
-		background-color: #ffffff;
+		background-color: $color-black;
+		padding-bottom: 2rem;
+		& > div {
+			& > ul {
+				height: 100%;
+				& > li {
+					&.ant-menu-item-selected {
+						background-color: $color-golden !important;
+						border-radius: 20px;
+						color: $color-black;
+					}
+				}
+			}
+		}
 	}
 
 	&__menu {
 		height: calc(100vh - 15rem);
 		width: 300px !important;
-		background-color: #ffffff;
+		background-color: #181818 !important;
+		border-radius: 20px;
+
+		margin: auto;
+	}
+
+	&__main {
+		background-color: $color-black;
+		padding-bottom: 2rem;
 	}
 }
 
@@ -22,6 +45,7 @@
 	}
 
 	&__name {
+		padding-left: 1rem;
 		width: 70%;
 		word-wrap: break-word;
 	}

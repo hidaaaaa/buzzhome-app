@@ -1,6 +1,14 @@
-import { Button, Layout, Space, Table, Tooltip } from "antd";
+import {
+	Button,
+	Layout,
+	Modal,
+	notification,
+	Space,
+	Table,
+	Tooltip,
+} from "antd";
 import React, { useEffect, useState } from "react";
-import { getAllData } from "../../../api/house.api";
+import { delelePost, getAllData } from "../../../api/house.api";
 import { formatTime } from "../../../utils/function.utils";
 
 const { Content } = Layout;
@@ -44,9 +52,9 @@ function ContentAdmin({ firebase, firestore }) {
 			key: "username",
 		},
 		{
-			title: "Action",
-			dataIndex: "MaVeXe",
-			key: "MaVeXe",
+			title: "Chức năng",
+			dataIndex: "id",
+			key: "id",
 			render: (id) => (
 				<Space size="middle">
 					<Button type="text" danger onClick={() => handleDeletePost(id)}>
@@ -58,6 +66,8 @@ function ContentAdmin({ firebase, firestore }) {
 	];
 
 	const [allPost, setAllPost] = useState([]);
+	const [deleteTicket, setDeleteTicket] = useState();
+	const [isModalVisible, setIsModalVisible] = useState(false);
 
 	console.log(allPost);
 
@@ -73,7 +83,31 @@ function ContentAdmin({ firebase, firestore }) {
 		})();
 	}, []);
 
-	const handleDeletePost = async (MaVeXe) => {};
+	const handleDeletePost = async (id) => {
+		setDeleteTicket(id);
+		setIsModalVisible(true);
+	};
+
+	const handleOk = async () => {
+		const result = await delelePost(deleteTicket);
+
+		if (result === "OK") {
+			const temp = allPost.filter((item) => item.id !== deleteTicket);
+			setAllPost(temp);
+			setIsModalVisible(false);
+			return notification.success({
+				message: "Xóa thàng công",
+			});
+		} else {
+			return notification.error({
+				message: "Xóa thất bại",
+			});
+		}
+	};
+
+	const handleCancel = () => {
+		setIsModalVisible(false);
+	};
 
 	return (
 		<Layout style={{ padding: "0 24px 24px" }}>
@@ -86,6 +120,9 @@ function ContentAdmin({ firebase, firestore }) {
 				}}
 			>
 				<Table
+					rowKey={(record) => {
+						return record.id;
+					}}
 					dataSource={allPost}
 					style={{
 						overflowX: "auto",
@@ -99,6 +136,24 @@ function ContentAdmin({ firebase, firestore }) {
 					columns={columns}
 				/>
 			</Content>
+
+			<Modal
+				closable={false}
+				visible={isModalVisible}
+				onOk={handleOk}
+				onCancel={handleCancel}
+				className="modalBox"
+				footer={[
+					<Button key="back" onClick={handleCancel}>
+						Quay lại
+					</Button>,
+					<Button key="submit" type="primary" onClick={handleOk}>
+						Xóa
+					</Button>,
+				]}
+			>
+				<div className="modalBox__title">Đồng ý xóa bài viết</div>
+			</Modal>
 		</Layout>
 	);
 }

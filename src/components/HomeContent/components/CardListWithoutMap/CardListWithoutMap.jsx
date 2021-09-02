@@ -6,7 +6,7 @@ import ModalHomeDetail from "../../../ModalHomeDetail/ModalHomeDetail";
 import ModalMap from "../../../ModalMap/ModalMap";
 import "./CardListWithoutMap.scss";
 
-const PAGE_HOME_SIZE = 6;
+const PAGE_HOME_SIZE = 8;
 const CardListWithoutMap = ({
 	data,
 	updateData,
@@ -76,7 +76,16 @@ const CardListWithoutMap = ({
 						))}
 				</Row>
 
-				<div className="pagination">
+				{/* <div className="pagination">
+					<CustomPagination
+						current={currentPage}
+						onChange={handlePagination}
+						total={total}
+						pageSize={PAGE_HOME_SIZE}
+					/>
+				</div> */}
+
+				<div className={`pagination ${data && data.length > 0 && "show"}`}>
 					<CustomPagination
 						current={currentPage}
 						onChange={handlePagination}
@@ -90,6 +99,9 @@ const CardListWithoutMap = ({
 					openModalMapSmallView={openModalMapSmallView}
 					data={data}
 					updateData={updateData}
+					user={user}
+					firestore={firestore}
+					firebase={firebase}
 				/>
 				<ModalHomeDetail
 					visible={modalDetailVisible}

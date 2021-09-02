@@ -1,3 +1,5 @@
+@import "../../../sass/index.scss";
+
 .form {
 	text-align: left;
 	overflow: auto;
@@ -6,14 +8,14 @@
 		font-weight: bold;
 		padding-bottom: 0.5rem;
 		padding-left: 0.5rem;
+		color: $color-golden;
 	}
 
 	&__input {
 		border: 0;
 		width: 100%;
 		padding: 1.5rem 2rem;
-		background-color: #ffffff;
-		border: 1px rgb(230, 230, 230) solid;
+		background-color: #292929 !important;
 		border-radius: 10px;
 		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 		margin-bottom: 1rem;
@@ -43,6 +45,11 @@
 			&:hover {
 				cursor: pointer;
 				background-image: linear-gradient(to right, #2ca7ee, #3e6bac);
+			}
+
+			&.disabled {
+				background-image: linear-gradient(to right, #525252, #525252);
+				cursor: not-allowed;
 			}
 		}
 

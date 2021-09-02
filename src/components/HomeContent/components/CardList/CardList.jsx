@@ -9,7 +9,7 @@ import "./CardList.scss";
 import CardListLoading from "../CardListLoading/CardListLoading";
 import EmptyCommon from "../../../../commons/EmptyCommon/EmptyCommon";
 
-const PAGE_HOME_SIZE = 6;
+const PAGE_HOME_SIZE = 8;
 const CardList = ({
 	data,
 	currentPage,
@@ -92,6 +92,9 @@ const CardList = ({
 				openModalMapSmallView={openModalMapSmallView}
 				data={data}
 				updateData={updateData}
+				user={user}
+				firestore={firestore}
+				firebase={firebase}
 			/>
 			<ModalHomeDetail
 				visible={modalDetailVisible}

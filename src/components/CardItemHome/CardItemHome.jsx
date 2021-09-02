@@ -1,18 +1,15 @@
+import {
+	DollarCircleOutlined,
+	EnvironmentOutlined,
+	HomeOutlined,
+} from "@ant-design/icons";
 import PropTypes from "prop-types";
 import React from "react";
 import { Link } from "react-router-dom";
-import DollarIcon from "../../assets/icons/dollar.svg";
-import HomeIcon from "../../assets/icons/home-2.svg";
-import LocationIcon from "../../assets/icons/place-marker.svg";
 import DefaultImg from "../../assets/img/building.jpg";
 import { DEFAULT_DISTRICT } from "../../utils/constant";
 import { formatPrice } from "../../utils/function.utils";
 import "./CardItemHome.scss";
-import {
-	EnvironmentOutlined,
-	DollarCircleOutlined,
-	HomeOutlined,
-} from "@ant-design/icons";
 
 const CardItemHome = ({
 	updateData,
@@ -57,7 +54,13 @@ const CardItemHome = ({
 			onClick={handleClick}
 		>
 			<figure className="img-wrap">
-				<img src={!!img ? img[0].link : DefaultImg} alt="Home" />
+				<img
+					src={!!img ? (img.length > 0 ? img[0].link : DefaultImg) : DefaultImg}
+					alt="Home"
+					onError={(e) => {
+						e.target.src = DefaultImg;
+					}}
+				/>
 			</figure>
 
 			<div className="cart-content">

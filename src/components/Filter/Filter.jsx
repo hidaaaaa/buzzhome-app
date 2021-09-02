@@ -1,4 +1,4 @@
-import { Slider } from "antd";
+import { Button, Slider } from "antd";
 import React, { useState } from "react";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
@@ -33,11 +33,16 @@ const updatedTimeOptions = [
 ];
 
 const priceOptions = {
-	1000000: "1.000.000đ",
+	0: {
+		style: {
+			color: "#debd64",
+		},
+		label: <strong>0đ</strong>,
+	},
 	// 5000: '5.000.000đ',
 	15000000: {
 		style: {
-			color: "#194B91",
+			color: "#debd64",
 		},
 		label: <strong>15.000.000đ</strong>,
 	},
@@ -66,6 +71,17 @@ const FilterComponent = ({ getHouseData, role }) => {
 			district,
 			minPrice,
 			maxPrice,
+			role,
+		});
+	};
+
+	const onResetFilter = () => {
+		setFilter({});
+		getHouseData({
+			pageNum: HOUSE_PAGE_START,
+			district: undefined,
+			minPrice: undefined,
+			maxPrice: undefined,
 			role,
 		});
 	};
@@ -144,7 +160,13 @@ const FilterComponent = ({ getHouseData, role }) => {
 			id="filter"
 			className={`filter ${animationFilter ? "native" : ""}`}
 		>
-			<div style={{ width: "100%" }}>
+			<div className="btn-group top">
+				<Button type="primary" danger onClick={onResetFilter}>
+					Reset Filter
+				</Button>
+			</div>
+
+			<div style={{ width: "100%", position: "relative" }}>
 				<div
 					className={`basic-filter-content ${animationFilter ? "native" : ""}`}
 				>
@@ -155,10 +177,10 @@ const FilterComponent = ({ getHouseData, role }) => {
 								{/* <CustomInput type="number" placeholder="from" name="priceFrom" onChange={onChangeValue}/>
                         <CustomInput type="number" placeholder="to" name="priceTo" onChange={onChangeValue}/> */}
 								<Slider
-									min={500000}
+									min={0}
 									max={20000000}
 									marks={priceOptions}
-									defaultValue={[1000000, 5000000]}
+									defaultValue={[0, 5000000]}
 									range
 									included={true}
 									step={500000}

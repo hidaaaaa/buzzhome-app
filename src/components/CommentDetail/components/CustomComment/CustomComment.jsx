@@ -9,15 +9,18 @@ import CommentItem from "../CommentItem/CommentItem";
 const CustomComment = ({ data, productCommentRef, firebase, user }) => {
 	const [isReply, setIsReply] = useState(false);
 
+	// get data comment reply from firebase
 	const replyComment = productCommentRef
 		.doc(data.id)
 		.collection("replyComment");
 	const [values, loading] = useCollectionData(replyComment, { idField: "id" });
 
+	//change to open inputComment
 	const handleClick = () => {
 		setIsReply(!isReply);
 	};
 
+	// send comment to firebase
 	const handleSubmit = async (values) => {
 		await replyComment.add({
 			avatar: user.photoURL || "",
@@ -36,8 +39,8 @@ const CustomComment = ({ data, productCommentRef, firebase, user }) => {
 			))}
 			{!!user ? (
 				!isReply ? (
-					<Button type="link" onClick={handleClick}>
-						Trả lời...
+					<Button type="link">
+						<span onClick={handleClick}>Trả lời...</span>
 					</Button>
 				) : (
 					<div

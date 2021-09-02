@@ -2,6 +2,13 @@
 
 .card-list {
 	position: relative;
+	background-color: #181818;
+	padding: 2rem 1.5rem;
+	border-radius: 20px;
+	width: 90%;
+	margin: 0 auto;
+	box-shadow: rgba(0, 0, 0, 0.19) 0px 10px 20px, rgba(0, 0, 0, 0.23) 0px 6px 6px;
+
 	.empty {
 		// visibility: visible;
 		// height: fit-content;

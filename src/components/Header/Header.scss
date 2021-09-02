@@ -9,9 +9,10 @@
 	width: 100%;
 	top: 0;
 	z-index: 999;
+	border-radius: 0 0 20px 20px;
 
 	&.native {
-		background-color: rgba($color: #ffffff, $alpha: 1);
+		background-color: rgba($color: #181818, $alpha: 1);
 	}
 
 	.header-wrap {
@@ -64,7 +65,7 @@
 	align-items: center;
 	justify-content: space-between;
 
-	border: 1px solid #ccc;
+	border: 1px solid $color-golden;
 	padding: 1rem;
 	width: 50%;
 	margin: 0 auto;
@@ -80,6 +81,7 @@
 
 	&__content {
 		padding-left: 10px;
+		color: $color-golden;
 	}
 
 	&__icon {
@@ -88,9 +90,9 @@
 		align-items: center;
 		min-height: 30px;
 		min-width: 30px;
-		background-color: #ff385c;
+		background-color: $color-golden;
 		border-radius: 30px;
-		color: #ffffff;
+		color: $color-black;
 	}
 }
 

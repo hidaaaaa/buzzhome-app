@@ -1,9 +1,10 @@
 /* eslint-disable no-unused-vars */
-import { Col, Row } from "antd";
+import { Button, Col, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { connect } from "react-redux";
 import { CSSTransition, SwitchTransition } from "react-transition-group";
 import { createStructuredSelector } from "reselect";
+import CreatePost from "../../commons/CreatePost/CreatePost";
 import { getHouseData } from "../../redux/house/house.action";
 import {
 	selectHouse,
@@ -89,7 +90,26 @@ const HomeContentComponent = ({
 						isSmallView > 1199 ? (
 							<Row>
 								<Col xs={24} sm={24} md={24} lg={24} xl={12}>
-									<div>Total: {numResults}</div>
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "space-between",
+											padding: "20px",
+										}}
+										className="homeContent__top"
+									>
+										<div className="homeContent__top--total">
+											Total: {numResults}
+										</div>
+										<div className="homeContent__top--btn">
+											<CreatePost
+												user={user}
+												firestore={firestore}
+												firebase={firebase}
+											/>
+										</div>
+									</div>
 									<CardList
 										loading={isLoading}
 										currentPage={houseReducer.currentPage}
@@ -118,6 +138,26 @@ const HomeContentComponent = ({
 						) : (
 							<Row>
 								<Col xs={24} sm={24} md={24} lg={24} xl={24}>
+									<div
+										style={{
+											display: "flex",
+											alignItems: "center",
+											justifyContent: "space-between",
+											padding: "20px",
+										}}
+										className="homeContent__top"
+									>
+										<div className="homeContent__top--total">
+											Total: {numResults}
+										</div>
+										<div className="homeContent__top--btn">
+											<CreatePost
+												user={user}
+												firestore={firestore}
+												firebase={firebase}
+											/>
+										</div>
+									</div>
 									<CardListWithoutMap
 										onPagination={onPagination}
 										total={numResults}
@@ -134,6 +174,26 @@ const HomeContentComponent = ({
 					) : (
 						<Row>
 							<Col xs={24} sm={24} md={24} lg={24} xl={24}>
+								<div
+									style={{
+										display: "flex",
+										alignItems: "center",
+										justifyContent: "space-between",
+										padding: "20px",
+									}}
+									className="homeContent__top"
+								>
+									<div className="homeContent__top--total">
+										Total: {numResults}
+									</div>
+									<div className="homeContent__top--btn">
+										<CreatePost
+											user={user}
+											firestore={firestore}
+											firebase={firebase}
+										/>
+									</div>
+								</div>
 								<CardListWithoutMap
 									onPagination={onPagination}
 									total={numResults}
@@ -164,7 +224,5 @@ const mapStateToProps = createStructuredSelector({
 const HomeContent = connect(mapStateToProps, { getHouseData })(
 	HomeContentComponent
 );
-
-
 
 export default HomeContent;

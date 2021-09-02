@@ -26,7 +26,12 @@ const Home = ({ user, firestore, firebase }) => {
 					onClick={() => {
 						setIsVisibleChat(true);
 					}}
-					style={{ marginRight: "3rem" }}
+					style={{
+						marginRight: "3rem",
+						backgroundColor: "#debd64",
+						border: "none",
+						color: "#0f0f0f",
+					}}
 				>
 					Mở chat
 				</Button>
@@ -40,6 +45,7 @@ const Home = ({ user, firestore, firebase }) => {
 				key="bottom"
 				height="90%"
 				footer={null}
+				className="modal__chat"
 			>
 				<GlobalChat user={user} firestore={firestore} firebase={firebase} />
 			</Modal>

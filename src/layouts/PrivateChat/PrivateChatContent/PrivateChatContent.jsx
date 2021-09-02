@@ -2,30 +2,60 @@ import { Button } from "antd";
 import Modal from "antd/lib/modal/Modal";
 import React, { useEffect, useRef, useState } from "react";
 import { useCollectionData } from "react-firebase-hooks/firestore";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
 import ChatMessage from "../../../commons/ChatMessage/ChatMessage";
 import CustomInputComment from "../../../commons/CustomInputComment/CustomInputComment";
 import SignInForm from "../../../commons/SignInForm/SignInForm";
 import SignUpForm from "../../../commons/SignUpForm/SignUpForm";
+import { getNotificationData } from "../../../redux/notification/notification.actions";
 
-function PrivateChatContent({ firestore, idChat, user, firebase }) {
+function PrivateChatContentValue({
+	firestore,
+	idChat,
+	user,
+	firebase,
+	getNotificationData,
+	friend,
+}) {
+	// check login or no
 	const isLoggedIn = !!user;
 
 	const [status, setStatus] = useState(true); //true = sign in || false = sign up
 	const [isModalVisible, setIsModalVisible] = useState(false);
+
+	// get chat by id
 	const messageRef = firestore
 		.collection("PrivateChat")
 		.doc(idChat)
 		.collection("Chat");
-	const query = messageRef.orderBy("createAt").limit(25);
-
+	const query = messageRef.orderBy("createAt").limit(100);
 	const [messages] = useCollectionData(query, { idField: "id" });
 
+	// noti friend
+	const notiRef = firestore
+		.collection("Notification")
+		.doc(friend)
+		.collection("Noti");
+
+	// noti me
+	const notiRef2 = firestore
+		.collection("Notification")
+		.doc(user.uid)
+		.collection("Noti");
+	const query2 = notiRef2.limit(100);
+	const [noti] = useCollectionData(query2, { idField: "id" });
+
+	// scroll to bottom when chat
 	const dummy = useRef();
 
 	useEffect(() => {
+		//console.log("new message");
+		//getNotificationData({ number: 1 });
 		dummy.current.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);
 
+	// handle open modal
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
@@ -42,14 +72,46 @@ function PrivateChatContent({ firestore, idChat, user, firebase }) {
 		setStatus(!status);
 	};
 
+	// handle send message
 	const handleSendMessage = async (values) => {
-		await messageRef.add({
-			text: values.text,
-			createAt: firebase.firestore.FieldValue.serverTimestamp(),
-			uid: user.uid,
-			photoURL: user.photoURL,
-			displayName: user.displayName || user.email,
-		});
+		try {
+			await messageRef.add({
+				text: values.text,
+				createAt: firebase.firestore.FieldValue.serverTimestamp(),
+				uid: user.uid,
+				photoURL: user.photoURL,
+				displayName: user.displayName || user.email,
+			});
+
+			// update noti
+			await notiRef.add({
+				noti: true,
+				uid: user.uid,
+			});
+		} catch (error) {
+			console.log(error);
+		}
+	};
+
+	// handle when seen
+	const handleSeen = async () => {
+		try {
+			await noti.map((item) => {
+				if (item.uid === friend) {
+					firestore
+						.collection("Notification")
+						.doc(user.uid)
+						.collection("Noti")
+						.doc(item.id)
+						.delete()
+						.then(() => console.log("ok"))
+						.catch((err) => console.log("delete faile", err));
+				}
+			});
+			await getNotificationData({ number: 0 });
+		} catch (error) {
+			console.log("err", error);
+		}
 	};
 
 	return (
@@ -72,7 +134,11 @@ function PrivateChatContent({ firestore, idChat, user, firebase }) {
 
 			<div className="globalChat__form">
 				{isLoggedIn ? (
-					<CustomInputComment onSubmit={handleSendMessage} name="text" />
+					<CustomInputComment
+						onSubmit={handleSendMessage}
+						name="text"
+						handleSeen={handleSeen}
+					/>
 				) : (
 					<Button
 						type="primary"
@@ -118,5 +184,11 @@ function PrivateChatContent({ firestore, idChat, user, firebase }) {
 		</div>
 	);
 }
+
+const mapStateToProps = createStructuredSelector({});
+
+const PrivateChatContent = connect(mapStateToProps, { getNotificationData })(
+	PrivateChatContentValue
+);
 
 export default PrivateChatContent;

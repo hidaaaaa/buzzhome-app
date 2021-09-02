@@ -1,3 +1,5 @@
+@import "../../sass/index.scss";
+
 .chatMessage {
 	display: flex;
 	align-items: center;
@@ -17,7 +19,7 @@
 		margin-top: 1rem;
 		width: 60px;
 		height: 60px;
-		border: 5px solid royalblue;
+		border: 5px solid $color-golden;
 	}
 
 	&__text {
@@ -25,18 +27,21 @@
 		padding: 0.75rem 2rem;
 		color: #ffffff;
 		font-size: 1.5rem;
+		font-weight: bold;
 
 		&.sent {
-			background-color: royalblue;
+			color: $color-black;
+			background-color: $color-gray;
 			border-radius: 20px 20px 5px 20px;
 		}
 		&.received {
-			background-color: gray;
+			background-color: #292929;
 			border-radius: 20px 20px 20px 5px;
 		}
 	}
 
 	&__name {
+		color: $color-golden;
 		margin: 0 1rem;
 	}
 

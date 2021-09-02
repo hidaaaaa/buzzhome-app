@@ -16,3 +16,6 @@ code {
 	/* font-family: 'Roboto', sans-serif, source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace; */
 }
+.ant-modal-content {
+	background-color: #dfdefd !important;
+}

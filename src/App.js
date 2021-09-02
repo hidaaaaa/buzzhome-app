@@ -15,6 +15,7 @@ import "./App.css";
 import Profile from "./commons/Profile/Profile";
 import Footer from "./components/Footer/Footer";
 import Header from "./components/Header/Header";
+import Loading from "./components/Loading/Loading";
 // IMPORT COMPONENTS
 import Home from "./layouts/Home/Home";
 import PrivateChat from "./layouts/PrivateChat/PrivateChat";
@@ -47,7 +48,7 @@ function App() {
 	const [admin, loading] = useCollectionData(query, { idField: "id" });
 
 	if (loading) {
-		return <>loading...</>;
+		return <Loading />;
 	}
 	return (
 		<div className="App">
@@ -116,7 +117,9 @@ function App() {
 					/>
 					<Switch>
 						<Redirect from="/" to="/home" exact />
-						<Redirect from="/admin" to="/home" exact />
+						<Redirect from="/admin" to="/home" />
+						<Redirect from="/message/:id" to="/home" exact />
+						<Redirect from="/message" to="/home" exact />
 
 						<Route path="/home">
 							<Home user={user} firestore={firestore} firebase={firebase} />
@@ -126,13 +129,13 @@ function App() {
 								<Route path="/me">
 									<Profile user={user} firebase={firebase} storage={storage} />
 								</Route>
-								<Route path="/message/:id">
+								{/* <Route path="/message/:id">
 									<PrivateChat
 										user={user}
 										firebase={firebase}
 										firestore={firestore}
 									/>
-								</Route>
+								</Route> */}
 							</>
 						)}
 					</Switch>

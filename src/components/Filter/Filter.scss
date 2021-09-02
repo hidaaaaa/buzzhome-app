@@ -18,7 +18,7 @@
 	.filter-item {
 		.title {
 			margin-bottom: 0.5rem;
-			color: $color-primary;
+			color: $color-golden;
 			font-size: $font-size-heading6;
 			font-weight: bold;
 		}
@@ -64,10 +64,11 @@
 		align-items: center;
 		border-radius: 25rem;
 		padding-bottom: 2rem;
-		box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px,
-			rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
+		box-shadow: rgba(0, 0, 0, 0.25) 0px 54px 55px,
+			rgba(0, 0, 0, 0.12) 0px -12px 30px, rgba(0, 0, 0, 0.12) 0px 4px 6px,
+			rgba(0, 0, 0, 0.17) 0px 12px 13px, rgba(0, 0, 0, 0.09) 0px -3px 5px;
 
-		background-color: #ffffff;
+		background-color: rgba($color: $color-black, $alpha: 0.7);
 
 		width: 100%;
 		margin: auto;
@@ -89,6 +90,15 @@
 		.btn-more {
 			margin-right: 1.5rem;
 		}
+
+		&.top {
+			margin-bottom: -1rem;
+			margin-top: 2rem;
+
+			& > button {
+				border-radius: 20px;
+			}
+		}
 	}
 	.checked-option {
 		margin-bottom: 3rem;
@@ -100,6 +110,14 @@
 	&.native {
 		top: -100px;
 	}
+}
+
+.ant-slider-track {
+	background-color: $color-golden;
+}
+
+.ant-slider:hover .ant-slider-track {
+	background-color: rgba($color: $color-golden, $alpha: 1);
 }
 
 @media only screen and (max-width: 1200px) {

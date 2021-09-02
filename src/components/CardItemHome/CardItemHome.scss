@@ -1,7 +1,8 @@
 @import "../../sass/index.scss";
 
 .card-item-home {
-	background-color: #ffffff;
+	background-color: #292929;
+	padding: 1.5rem;
 	border-radius: 20px;
 	//padding: 2rem;
 	border: 1px solid rgba(0, 0, 0, 0.042);
@@ -36,7 +37,7 @@
 	}
 
 	.cart-content {
-		padding: 2rem;
+		padding: 1rem;
 	}
 
 	.title {
@@ -52,6 +53,9 @@
 		white-space: pre-line;
 		&:hover {
 			color: $color-primary;
+		}
+		& > a {
+			color: $color-white;
 		}
 	}
 	.date {
@@ -76,18 +80,18 @@
 			margin-right: 0.5rem;
 		}
 		&.home {
-			color: $color-black;
+			color: $color-white;
 			font-weight: 600;
 		}
 
 		&.price {
-			color: $color-black;
+			color: $color-white;
 			font-weight: 600;
 		}
 
 		&.location {
-			background-color: #ff385c;
-			color: #ffffff;
+			background-color: $color-golden;
+			color: $color-black;
 			font-weight: 600;
 		}
 	}
@@ -101,5 +105,6 @@
 		overflow-y: hidden;
 		text-overflow: ellipsis;
 		white-space: pre-line;
+		color: $color-gray;
 	}
 }

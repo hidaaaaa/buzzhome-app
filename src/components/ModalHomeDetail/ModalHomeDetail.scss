@@ -4,15 +4,17 @@
 	width: 70% !important;
 
 	.modal-home-detail-content {
-		padding: 5rem;
+		padding: 3rem;
+		background-color: $color-black;
+		color: $color-white;
 	}
 	.ant-modal-close-x {
-		color: rgba($color-black, 0.8);
+		color: rgba($color-white, 0.8);
 	}
 }
 
 .ant-modal-content {
-	border-radius: 10px;
+	border-radius: 20px;
 }
 
 @media only screen and (max-width: 768px) {

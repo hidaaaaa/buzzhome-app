@@ -20,8 +20,8 @@
 	.secondary {
 		background-image: linear-gradient(
 			to right,
-			$color-warning,
-			rgba($color-warning, 0.7)
+			rgba($color-warning, 0.7),
+			$color-warning
 		);
 		color: $color-primary-2;
 		border-color: $color-warning;

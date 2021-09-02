@@ -24,11 +24,9 @@ const Header = ({ auth, firebase, user }) => {
 		<header className={`header ${header ? "native" : ""}`}>
 			<div className="header-wrap">
 				<div className="header__logo">
-					<Button type="text">
-						<Link to="/home">
-							<Logo />
-						</Link>
-					</Button>
+					<Link to="/home">
+						<Logo />
+					</Link>
 				</div>
 
 				{header ? (

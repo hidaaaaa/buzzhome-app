@@ -1,26 +1,28 @@
+@import "../../../sass/index.scss";
+
 .commentInput {
 	width: 100%;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
-	border-top: 1px solid #ccc;
-	padding-bottom: 1rem;
+
+	background-color: #292929;
+	border: 1px #292929 solid;
+	border-radius: 20px;
+	padding: 1rem;
+	margin-top: 1rem;
+	margin-bottom: 1rem;
 
 	&__form {
-		padding: 1rem 0;
 		width: 100%;
 	}
 
 	&__input {
 		border: 0;
 		width: 100%;
-		padding: 0.5rem 2rem;
-		background-color: #ffffff;
-		border: 1px rgb(230, 230, 230) solid;
-		border-radius: 10px 0 0 10px;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-		margin-top: 1rem;
-
+		margin: 0 2rem;
+		background-color: #292929;
+		color: $color-white;
 		&:focus {
 			outline: none;
 		}
@@ -30,24 +32,20 @@
 		border: 0;
 		width: 100%;
 		padding: 0.5rem 2rem;
-		border-radius: 0 10px 10px 0;
+		border-radius: 17px;
 
-		color: #ffffff;
+		color: $color-black;
 		font-weight: bold;
 		font-size: 1.5rem;
-		margin-bottom: 1rem;
-		margin-top: 2rem;
-		box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 
 		&:focus {
 			outline: none;
 		}
 		&.primary {
-			background-image: linear-gradient(to right, #0093e9, #194b91);
-			&:hover {
-				cursor: pointer;
-				background-image: linear-gradient(to right, #2ca7ee, #3e6bac);
-			}
+			background-color: $color-golden;
+		}
+		&.upload {
+			width: auto;
 		}
 	}
 }

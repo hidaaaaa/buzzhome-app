@@ -9,21 +9,25 @@ import SignInForm from "../../commons/SignInForm/SignInForm";
 import "./GlobalChat.scss";
 
 function GlobalChat({ user, firestore, firebase }) {
+	// check user login or not
 	const isLoggedIn = !!user;
 	const [status, setStatus] = useState(true); //true = sign in || false = sign up
 	const [isModalVisible, setIsModalVisible] = useState(false);
 
+	// handle get list message in global chat
 	const messageRef = firestore.collection("GlobalChat");
-	const query = messageRef.limit(25);
+	const query = messageRef.orderBy("createAt").limit(100);
 
 	const [messages] = useCollectionData(query, { idField: "id" });
 
+	// scroll to bottom when chat
 	const dummy = useRef();
 
 	useEffect(() => {
 		dummy.current.scrollIntoView({ behavior: "smooth" });
 	}, [messages]);
 
+	// handle open modal
 	const showModal = () => {
 		setIsModalVisible(true);
 	};
@@ -40,14 +44,27 @@ function GlobalChat({ user, firestore, firebase }) {
 		setStatus(!status);
 	};
 
+	// handle send message
 	const handleSendMessage = async (values) => {
-		await messageRef.add({
-			text: values.text,
-			createAt: firebase.firestore.FieldValue.serverTimestamp(),
-			uid: user.uid,
-			photoURL: user.photoURL,
-			displayName: user.displayName || user.email,
-		});
+		console.log(values);
+		if (values.photo.length > 0) {
+			await messageRef.add({
+				text: values.text,
+				createAt: firebase.firestore.FieldValue.serverTimestamp(),
+				uid: user.uid,
+				photoURL: user.photoURL,
+				displayName: user.displayName || user.email,
+				imagesLink: values.photo,
+			});
+		} else {
+			await messageRef.add({
+				text: values.text,
+				createAt: firebase.firestore.FieldValue.serverTimestamp(),
+				uid: user.uid,
+				photoURL: user.photoURL,
+				displayName: user.displayName || user.email,
+			});
+		}
 	};
 
 	// if (isLoggedIn) return setIsModalVisible(false);
@@ -73,7 +90,11 @@ function GlobalChat({ user, firestore, firebase }) {
 
 			<div className="globalChat__form">
 				{isLoggedIn ? (
-					<CustomInputComment onSubmit={handleSendMessage} name="text" />
+					<CustomInputComment
+						onSubmit={handleSendMessage}
+						name="text"
+						firebase={firebase}
+					/>
 				) : (
 					<Button
 						type="primary"
@@ -108,7 +129,7 @@ function GlobalChat({ user, firestore, firebase }) {
 						<div>Sign Up</div>
 						<SignUpForm auth={firebase.auth()} firebase={firebase} />
 						<span>
-							Đã có tài khoản ?{" "}
+							Đã có tài khoản ?
 							<Button type="link" onClick={handleSwitchAuth}>
 								Đăng nhập
 							</Button>
