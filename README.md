@@ -1,43 +1,9 @@
-I.Post:
+# UI web(ReactJS, Antd) for create and control post to rent your house/apartment 
 
-1.Content:
+## How to run:
 
-a./CommentDetail: src\components\CommentDetail\CommentDetail.jsx
-b./CreatePost: src\commons\CreatePost\CreatePost.jsx
-c./LikePost: src\commons\Profile\Component\LikePost\LikePost.jsx
-d./PostCreateByUser: src\commons\Profile\Component\Posts\Posts.jsx
+### `yarn install`
 
-2.Component:
+### `yarn start`
 
-a./CustomComment: src\components\CommentDetail\components\CustomComment\CustomComment.jsx
-b./CustomInputComment: src\commons\CustomInputComment\CustomInputComment.jsx
-c./CustomChecked: src\commons\CustomChecked\CustomChecked.jsx
-d./CreatePostForm: src\commons\CreatePost\CreatePostForm\CreatePostForm.jsx
-
-II.Chat:
-
-1.Content:
-
-a./GlobalChat: src\components\GlobalChat\GlobalChat.jsx
-b./PrivateChat: src\layouts\PrivateChat\PrivateChat.jsx
-
-2.Componet:
-
-a./PrivateChatContent: src\layouts\PrivateChat\PrivateChatContent\PrivateChatContent.jsx
-b./ChatMessage: src\commons\ChatMessage\ChatMessage.jsx
-c./CustomInputComment: src\commons\CustomInputComment\CustomInputComment.jsx
-
-III/Profile
-
-1.Content:
-
-a./Infomation: src\commons\Profile\Component\Profile\Information.jsx
-b./ChangePassword: src\commons\Profile\Component\ChangePassword\ChangePassword.jsx
-c./Auth: src\commons\Auth\Auth.jsx
-d./UserHeader: src\commons\UserHeader\UserHeader.jsx
-
-2.Componet:
-
-a./SignInForm: src\commons\SignInForm\SignInForm.jsx
-b./SignUpForm: src\commons\SignUpForm\SignUpForm.jsx
-c./SignOut: src\commons\SignOut\SignOut.jsx
+see UI at [http://localhost:3000](abc)
